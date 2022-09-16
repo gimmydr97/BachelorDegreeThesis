@@ -1,0 +1,70 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main{
+	
+
+	public static void main(String[] args) {
+		
+		LogicaJPA logJPA = new LogicaJPA("testhsqldb");
+		Auto auto1 = new Auto();
+		auto1.setMatricola("111");
+		auto1.setModello("Polo");
+		auto1.setMarca("Golia");
+		auto1.setAnnoImmatricolazione(1914);
+		ArrayList<String> acc1 = new ArrayList<String>();
+		acc1.add("cambio");
+		acc1.add("volante");
+		acc1.add("freno");
+		auto1.setAccessori(acc1);
+		logJPA.jpaCreate(auto1);
+		Auto auto2 = new Auto();
+		auto2.setMatricola("313");
+		auto2.setModello("Smile");
+		auto2.setMarca("Golia");
+		auto2.setAnnoImmatricolazione(1864);
+		ArrayList<String> acc2 = new ArrayList<String>();
+		acc2.add("fari");
+		acc2.add("radiatore");
+		auto2.setAccessori(acc2);
+		logJPA.jpaCreate(auto2);
+		List<Auto> listaAuto1 = logJPA.jpaRead("select t from Auto " + "t").getResultList();
+		System.out.println("nnInizializzaione, elenco auto " + "nel database:");
+		
+		for(int i=0;i<listaAuto1.size();i++){
+			System.out.println(listaAuto1.get(i).toString());
+		}
+		
+		auto1.setAnnoImmatricolazione(9999);
+		auto2.setAnnoImmatricolazione(1813);
+		auto2.getAccessori().add("targa");
+		List<Auto> listaAuto2 = logJPA.jpaRead("select t from Auto t").getResultList();
+		System.out.println("nnModifiche senza update, elenco auto nel database:");
+		
+		for(int i=0;i<listaAuto2.size();i++){
+		System.out.println(listaAuto2.get(i).toString());
+		}
+		
+		Auto auto3 = new Auto();
+		auto3.setMatricola("120");
+		auto3.setModello("ActivePlus");
+		auto3.setMarca("Golia");
+		auto3.setAnnoImmatricolazione(1980);
+		ArrayList<String>acc3 = new ArrayList<String>();
+		acc3.add("tettuccio");
+		acc3.add("specchietto");
+		auto3.setAccessori(acc3);
+		logJPA.jpaCreate(auto3);
+		List<Auto> listaAuto3 = logJPA.jpaRead("select t from Auto t").getResultList();
+		System.out.println("nnNuovo ingresso, elenco auto nel database:");
+		for(int i=0;i<listaAuto3.size();i++){
+		System.out.println(listaAuto3.get(i).toString());
+		}
+		System.out.println("nnElenco vecchio auto nel database:");
+		for(int i=0;i<listaAuto1.size();i++){
+		System.out.println(listaAuto1.get(i).toString());
+		}
+	}
+}

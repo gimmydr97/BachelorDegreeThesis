@@ -1,0 +1,50 @@
+package ReaderXML;
+
+import java.io.*;
+import java.util.*;
+
+import org.jdom.*;
+import org.jdom.input.*;
+
+import org.apache.commons.codec.binary.Hex;
+
+
+public class ReaderXML {
+	
+	  public ReaderXML() {}
+	  public String[]  getDati(String nameFile){
+		  String[] s = new String[2];
+		  try {
+	    	
+	      //Creo un SAXBuilder e con esco costruisco un document
+	      SAXBuilder builder = new SAXBuilder();
+	      Document document = builder.build(new File(nameFile));
+	     
+	     
+	      //Prendo la radice
+	      Element root = document.getRootElement();
+	     
+	      //Estraggo i figli dalla radice
+	      List<?>children = root.getChildren();
+	      Iterator<?> iterator = children.iterator();
+	      //scorro la testata che e' sempre il primo figlio di questo tipo di file xml
+	      Element item = (Element)iterator.next();
+	      //arrivo al child esercizio
+	      item = (Element)iterator.next();
+	      s[0]=item.getText();
+	      //conto il numero di mandati
+	      int i = 0;
+	      while(iterator.hasNext()){
+	    	item = (Element)iterator.next();
+	        i=i+1;
+	      }
+	      s[1] = String.valueOf(i);
+	    }
+	    catch (Exception e) {
+	      System.err.println("Errore durante la lettura dal file");
+	      e.printStackTrace();
+	    }
+	    return s;
+	  }
+}
+

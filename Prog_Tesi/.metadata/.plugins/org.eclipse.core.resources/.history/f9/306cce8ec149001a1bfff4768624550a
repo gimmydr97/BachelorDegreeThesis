@@ -1,0 +1,37 @@
+package JDOMReader;
+
+import java.io.*;
+import java.util.*;
+
+import org.jdom.*;
+import org.jdom.input.*;
+
+public class JDOMReader {
+  public static void main(String[] args) {
+    try {
+      //Creo un SAXBuilder e con esco costruisco un document
+      SAXBuilder builder = new SAXBuilder();
+      Document document = builder.build(new File("versione_ordinativo_temp_1195359.xml"));
+     
+      //Prendo la radice
+      Element root = document.getRootElement();
+      //Estraggo i figli dalla radice
+      List children = root.getChildren();
+      Iterator iterator = children.iterator();
+     
+      //Per ogni figlio
+      while(iterator.hasNext()){
+        //Mostro il valore dell'elemento figlio "DESCR" e degli
+        //attributi "importanza", "perc_completamento", e "completata"
+        //sullo standard output
+        Element item = (Element)iterator.next();
+        Element description = item.getChild("identificativo_flusso");
+        System.out.println(  "identificativo_flusso:"+ description.getText());
+      }
+    }
+    catch (Exception e) {
+      System.err.println("Errore durante la lettura dal file");
+      e.printStackTrace();
+    }
+  }
+}

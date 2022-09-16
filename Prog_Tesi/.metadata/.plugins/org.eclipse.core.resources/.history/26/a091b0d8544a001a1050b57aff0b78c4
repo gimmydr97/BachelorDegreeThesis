@@ -1,0 +1,104 @@
+package OpWithDB;
+
+//STEP 1. Import required packages
+import java.sql.*;
+
+public class OpWithDB {
+	 static  String JDBC_DRIVER;
+	 static  String DB_URL;
+	 static  String USER;
+	 static  String PASS;
+	 
+	public OpWithDB() {
+	 // JDBC driver name and database URL
+	  JDBC_DRIVER = "sap.jdbc4.sqlanywhere.IDriver";  
+	  DB_URL = "jdbc:sqlanywhere:DSN=DBS";
+
+	 //  Database credentials
+	  USER = "gianmaria";
+	  PASS = "golem.123";
+	}
+	
+ public String SELECT(String Tab) {
+	 Connection conn = null;
+	 Statement stmt = null;
+	 String s = "";
+	 try{
+	    //STEP 2: Register JDBC driver
+	    Class.forName("sap.jdbc4.sqlanywhere.IDriver");
+	
+	    //STEP 3: Open a connection
+	    conn = DriverManager.getConnection(DB_URL,USER,PASS);
+	
+	    //STEP 4: Execute a query
+	    stmt = conn.createStatement();
+	    String sql;
+	    sql = "SELECT IDEnte, nome, password, Ente FROM " + Tab;
+	    ResultSet rs = stmt.executeQuery(sql);
+	 
+	    //STEP 5: Extract data from result set
+	    s = formaRisult(Tab,rs);
+	    
+	    //STEP 6: Clean-up environment
+	    rs.close();
+	    stmt.close();
+	    conn.close();
+	    
+	 }catch(SQLException se){se.printStackTrace(); }
+	  catch(Exception e){e.printStackTrace(); }
+	  
+	 finally{
+	    
+		try{
+	     
+			if(stmt!=null) stmt.close();
+			
+	    }catch(SQLException se2){}
+		
+	    try{
+	    	
+	       if(conn!=null) conn.close();
+	       
+	    }catch(SQLException se){ se.printStackTrace(); }
+	    
+	 }
+	 return s;
+ 	}
+ 
+ 
+ 
+ 
+ private String formaRisult(String Tab, ResultSet rs) throws SQLException {
+	 String s = "";
+	 
+	 switch(Tab) {
+	 
+	 	case("FlussoCaricato"):
+			while(rs.next()){
+				
+		     int idFlussoC  = rs.getInt("IDFlussoC");
+		     int idEnte = rs.getInt("IDEnte");
+		     String Ente = rs.getString("Ente");
+		     String StrutturaIPA = rs.getString("StrutturaIPA");
+		     int Esercizio = rs.getInt("Esercizio");
+		     String NomeFile = rs.getString("NomeFile");
+		     String Stato = rs.getString("Stato");
+		     String DataCaricamento = rs.getString("DataCaricamento");
+		     int NumOrdPresenti = rs.getInt("NumOrdinativiPresenti");
+		     int NumErroriDiImportazione = rs.getInt("NumErroriDiImportazione");
+		  
+		    s = s +  "ID: " + String.valueOf(id) + ", Name: " + name + ", passw: " + password + ", Ente: " + Ente + "\n";
+		    
+			}
+	 	break;
+	 	
+	 	case("a"): 
+	 		
+	 }
+	return s;
+ }
+ 
+ 
+ 
+ 
+}
